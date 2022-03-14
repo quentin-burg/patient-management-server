@@ -21,6 +21,8 @@ interface PatientInstance extends Model<PatientAttr, PatientCreationAttributes>,
 //   id: {
 //     primaryKey: true,
 //     type: DataTypes.UUID,
+// defaultValue: DataTypes.UUIDV1,
+
 //   },
 //   firstname: DataTypes.STRING,
 //   lastname: DataTypes.STRING,
