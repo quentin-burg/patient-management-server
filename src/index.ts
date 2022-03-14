@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     app.use(routes(repository));
     app.listen(port, () => {
