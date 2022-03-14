@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "Pregnancy Wheel Server",
   "main": "lib/index.js",
-  "type": "module",
   "scripts": {
-    "start": "tsc && node lib/index.js",
+    "watch": "tsc -w",
+    "dev": "nodemon lib/index.js",
+    "start": "rm -rf lib && tsc && node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,10 +22,14 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.17.0"
   }
 }
