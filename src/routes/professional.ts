@@ -1,18 +1,14 @@
 import * as express from 'express';
-import PUC from '../domain/usecases/professional';
+import professionalUseCases from '../domain/usecases/professional';
 import { ProfessionalPort } from '../domain/ports/professional';
-
-// TODO : adapter must be injected from index.ts instead of import
-
-// apiRoutes.post('/', (req, res) => {
-//   PUC.
-// })
 
 export default (professionalRepo: ProfessionalPort) => {
   const apiRoutes = express.Router();
 
+  const usecases = professionalUseCases(professionalRepo);
+
   apiRoutes.get('/', (req, res) => {
-    return professionalRepo.findAll().then(pro => res.status(200).send(pro));
+    return usecases.findAllProfessionals().then(pro => res.send(pro));
   });
 
   return apiRoutes;
