@@ -1,12 +1,12 @@
 import * as express from 'express';
-import { ProfessionalPort } from '../domain/ports/professional';
-import { isAuthenticated, makeJWT } from '../infra/jwt';
+import { getUserIdFromJWT, isAuthenticated, makeJWT } from '../infra/jwt';
 import { hashPassword } from '../infra/password-hash';
 import getProfessionalService from '../domain/services/professional';
+import { Repository } from '../domain/ports';
 
-export default (repository: ProfessionalPort) => {
+export default (repository: Repository) => {
   const apiRoutes = express.Router();
-  const { register, findAll, login } = getProfessionalService(repository);
+  const { register, findAll, login, addPatient } = getProfessionalService(repository);
 
   apiRoutes.get('/', (req, res, next) => {
     return findAll()
@@ -38,6 +38,15 @@ export default (repository: ProfessionalPort) => {
   });
 
   apiRoutes.use(isAuthenticated);
+
+  apiRoutes.put('/addPatient', (req, res, next) => {
+    const { email } = req.body;
+    const userId = req.headers.authorization && getUserIdFromJWT(req.headers.authorization);
+    if (userId) {
+      return addPatient(email, userId).then(() => res.status(200).json({ success: true }));
+    }
+    return res.status(400).json({ success: false, reason: 'Cannot get professional id.' });
+  });
 
   return apiRoutes;
 };

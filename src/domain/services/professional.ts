@@ -1,15 +1,23 @@
 import { comparePassword } from '../../infra/password-hash';
 import { ProfessionalRegisterParams } from '../../shared.types';
-import { ProfessionalPort } from '../ports/professional';
+import { Repository } from '../ports';
 
-export default (repository: ProfessionalPort) => ({
-  findAll: () => repository.findAll(),
-  register: (args: ProfessionalRegisterParams) => repository.create(args),
+export default ({ professional: professionalRepo, patient: patientRepo }: Repository) => ({
+  findAll: () => professionalRepo.findAll(),
+  register: (args: ProfessionalRegisterParams) => professionalRepo.create(args),
   login: (email: string, password: string) => {
-    return repository
+    return professionalRepo
       .findOneByEmail(email)
       .then(p =>
         comparePassword(password, p.hash).then(isCorrect => (isCorrect ? p : Promise.reject('Login failed.'))),
       );
+  },
+  addPatient: (patientEmail: string, professionalId: string) => {
+    return patientRepo.findOneByEmail(patientEmail).then(patient => {
+      if (patient) {
+        return professionalRepo.addPatient(patient.id, professionalId);
+      }
+      return Promise.reject('Patient not found');
+    });
   },
 });

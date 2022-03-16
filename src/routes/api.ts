@@ -7,8 +7,6 @@ import patientRoutes from './patient';
 export default (repository: Repository) => {
   const apiRoutes = express.Router();
 
-  apiRoutes
-    .use('/professional', professionalRoutes(repository.professional))
-    .use('/patient', patientRoutes(repository.patient));
+  apiRoutes.use('/professional', professionalRoutes(repository)).use('/patient', patientRoutes(repository));
   return apiRoutes;
 };

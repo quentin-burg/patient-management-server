@@ -1,8 +1,9 @@
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { BelongsToSetAssociationMixin, DataTypes, Model, ModelStatic, Optional, Sequelize } from 'sequelize';
 import { Professional as ProfessionalEntity } from 'src/domain/entities/identity/professional';
-import { ProfessionalRegisterParams } from '../../../shared.types';
 import { ProfessionalPort } from '../../../domain/ports/professional';
-
+import { Patient } from '../../../domain/entities/identity/patient';
+import { PatientInstance } from './patient';
+import { PatientPort } from '../../../domain/ports/patient';
 interface ProfessionalAttr {
   id: string;
   firstname: string;
@@ -14,8 +15,6 @@ interface ProfessionalAttr {
 
 interface ProfessionalCreationAttributes extends Optional<ProfessionalAttr, 'id'> {}
 
-interface ProfessionalInstance extends Model<ProfessionalAttr, ProfessionalCreationAttributes>, ProfessionalAttr {}
-
 const toEntity = (p: ProfessionalInstance): ProfessionalEntity => ({
   email: p.email,
   lastname: p.lastname,
@@ -25,7 +24,13 @@ const toEntity = (p: ProfessionalInstance): ProfessionalEntity => ({
   hash: p.hash,
 });
 
-export default (sequelize: Sequelize) => {
+export interface ProfessionalInstance
+  extends Model<ProfessionalAttr, ProfessionalCreationAttributes>,
+    ProfessionalAttr {
+  addPatient: BelongsToSetAssociationMixin<PatientInstance, Patient>;
+}
+
+export default (sequelize: Sequelize) => (Patient: ModelStatic<PatientInstance>) => {
   const Professional = sequelize.define<ProfessionalInstance>('Professional', {
     id: {
       primaryKey: true,
@@ -42,11 +47,20 @@ export default (sequelize: Sequelize) => {
 
   const ProfessionnalAdapter: ProfessionalPort = {
     findAll: () => Professional.findAll().then(pro => pro.map(toEntity)),
-    create: (args: ProfessionalRegisterParams) => Professional.create(args).then(toEntity),
-    findOneByEmail: (email: string) =>
+    create: args => Professional.create(args).then(toEntity),
+    findOneByEmail: email =>
       Professional.findOne({ where: { email } }).then(p =>
         p ? toEntity(p) : Promise.reject('Professional not found.'),
       ),
+    addPatient: (patientId, proId) =>
+      Professional.findOne({ where: { id: proId } })
+        .then(professional => professional || Promise.reject('Professional not found.'))
+        .then(professional =>
+          Patient.findOne({ where: { id: patientId } }).then(patient => {
+            if (professional && patient) return professional.addPatient(patient);
+            return Promise.reject('Professional or patient not found.');
+          }),
+        ),
   };
 
   return { Professional, ProfessionnalAdapter };

@@ -1,10 +1,10 @@
 import * as express from 'express';
-import { PatientPort } from '../domain/ports/patient';
 import { isAuthenticated, makeJWT } from '../infra/jwt';
 import { hashPassword } from '../infra/password-hash';
 import getPatientService from '../domain/services/patient';
+import { Repository } from '../domain/ports';
 
-export default (repository: PatientPort) => {
+export default (repository: Repository) => {
   const { register, findAll, login } = getPatientService(repository);
 
   const apiRoutes = express.Router();

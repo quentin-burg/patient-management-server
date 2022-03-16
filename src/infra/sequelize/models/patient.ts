@@ -14,7 +14,7 @@ interface PatientAttr {
 
 interface PatientCreationAttributes extends Optional<PatientAttr, 'id'> {}
 
-interface PatientInstance extends Model<PatientAttr, PatientCreationAttributes>, PatientAttr {}
+export interface PatientInstance extends Model<PatientAttr, PatientCreationAttributes>, PatientAttr {}
 
 const toEntity = (p: PatientInstance): PatientEntity => ({
   id: p.id,

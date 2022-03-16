@@ -1,12 +1,12 @@
 import { comparePassword } from '../../infra/password-hash';
 import { PatientRegisterParams } from '../../shared.types';
-import { PatientPort } from '../ports/patient';
+import { Repository } from '../ports';
 
-export default (repository: PatientPort) => ({
-  findAll: () => repository.findAll(),
-  register: (args: PatientRegisterParams) => repository.create(args),
+export default ({ patient }: Repository) => ({
+  findAll: () => patient.findAll(),
+  register: (args: PatientRegisterParams) => patient.create(args),
   login: (email: string, password: string) => {
-    return repository
+    return patient
       .findOneByEmail(email)
       .then(p =>
         comparePassword(password, p.hash).then(isCorrect => (isCorrect ? p : Promise.reject('Login failed.'))),

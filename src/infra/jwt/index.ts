@@ -22,3 +22,7 @@ export const isAuthenticated = (req, res, next) => {
   if (!userId) return next('Unauthorized');
   return next();
 };
+
+export const getUserIdFromJWT = (token: string) => {
+  return verifyJWT(token);
+};

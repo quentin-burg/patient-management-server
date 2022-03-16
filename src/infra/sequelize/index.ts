@@ -5,8 +5,8 @@ import initPatientModel from './models/patient';
 
 export const sequelize = new Sequelize('postgres://postgres:postgres@127.0.0.1:5432/wheel');
 
-const { ProfessionnalAdapter, Professional } = initProfessionalModel(sequelize);
 const { PatientAdapter, Patient } = initPatientModel(sequelize);
+const { ProfessionnalAdapter, Professional } = initProfessionalModel(sequelize)(Patient);
 
 export const repository: Repository = {
   professional: ProfessionnalAdapter,
