@@ -22,6 +22,7 @@ const toEntity = (p: ProfessionalInstance): ProfessionalEntity => ({
   firstname: p.firstname,
   rpps: p.rpps,
   id: p.id,
+  hash: p.hash,
 });
 
 export default (sequelize: Sequelize) => {
@@ -41,7 +42,11 @@ export default (sequelize: Sequelize) => {
 
   const ProfessionnalAdapter: ProfessionalPort = {
     findAll: () => Professional.findAll().then(pro => pro.map(toEntity)),
-    register: (args: ProfessionalRegisterParams) => Professional.create(args).then(toEntity),
+    create: (args: ProfessionalRegisterParams) => Professional.create(args).then(toEntity),
+    findOneByEmail: (email: string) =>
+      Professional.findOne({ where: { email } }).then(p =>
+        p ? toEntity(p) : Promise.reject('Professional not found.'),
+      ),
   };
 
   return { Professional, ProfessionnalAdapter };

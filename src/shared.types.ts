@@ -6,6 +6,11 @@ export type ProfessionalRegisterParams = {
   hash: string;
 };
 
+export type ProfessionalLoginParams = {
+  email: string;
+  password: string;
+};
+
 export type PatientRegisterParams = {
   email: string;
   firstname: string;

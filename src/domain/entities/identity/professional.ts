@@ -4,4 +4,5 @@ export type Professional = {
   lastname: string;
   email: string;
   rpps: string;
+  hash: string;
 };

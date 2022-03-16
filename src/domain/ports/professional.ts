@@ -3,5 +3,6 @@ import { Professional } from '../entities/identity/professional';
 
 export interface ProfessionalPort {
   findAll(): Promise<Professional[]>;
-  register(args: ProfessionalRegisterParams): Promise<Professional>;
+  create(args: ProfessionalRegisterParams): Promise<Professional>;
+  findOneByEmail(email: string): Promise<Professional>;
 }
