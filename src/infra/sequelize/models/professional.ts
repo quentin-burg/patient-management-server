@@ -8,6 +8,7 @@ interface ProfessionalAttr {
   id: string;
   firstname: string;
   lastname: string;
+  hash: string;
   rpps: string;
   email: string;
 }
@@ -34,6 +35,7 @@ export default (sequelize: Sequelize) => {
     },
     firstname: { type: DataTypes.STRING, allowNull: false },
     lastname: { type: DataTypes.STRING, allowNull: false },
+    hash: { type: DataTypes.STRING, allowNull: false },
     rpps: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false },
   });
@@ -42,7 +44,7 @@ export default (sequelize: Sequelize) => {
 
   const ProfessionnalAdapter: ProfessionalPort = {
     findAll: () => Professional.findAll().then(pro => pro.map(toEntity)),
-    create: (args: RegisterParams) => Professional.create(args).then(toEntity),
+    register: (args: RegisterParams) => Professional.create(args).then(toEntity),
   };
 
   return { Professional, ProfessionnalAdapter };

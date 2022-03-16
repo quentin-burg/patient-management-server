@@ -1,3 +1,7 @@
-import { Professional } from './domain/entities/identity/professional';
-
-export type RegisterParams = Pick<Professional, 'email' | 'firstname' | 'lastname' | 'rpps'>;
+export type RegisterParams = {
+  email: string;
+  firstname: string;
+  lastname: string;
+  rpps: string;
+  hash: string;
+};

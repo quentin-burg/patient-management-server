@@ -1,28 +1,27 @@
 import * as express from 'express';
-import professionalUseCases from '../domain/usecases/professional';
 import { ProfessionalPort } from '../domain/ports/professional';
 import { isAuthenticated, makeJWT } from '../infra/jwt';
+import { hashPassword } from '../infra/password-hash';
 
-export default (professionalRepo: ProfessionalPort) => {
+export default ({ findAll, register }: ProfessionalPort) => {
   const apiRoutes = express.Router();
 
-  const usecases = professionalUseCases(professionalRepo);
-
   apiRoutes.get('/', (req, res) => {
-    return usecases.findAllProfessionals().then(pro => res.status(200).json(pro));
+    return findAll().then(pro => res.status(200).json(pro));
   });
 
   apiRoutes.post('/register', (req, res, next) => {
-    const { firstname, lastname, rpps, email } = req.body;
-    if (!firstname || !lastname || !rpps || !email) return res.status(400).json({ success: false });
-    return usecases
-      .register({ firstname, lastname, rpps, email })
-      .then(pro => ({ token: makeJWT(pro.id), pro }))
-      .then(({ pro, token }) => res.status(201).json({ professional: pro, token }))
-      .catch(err => {
-        console.error(err);
-        return next();
-      });
+    const { firstname, lastname, rpps, email, password } = req.body;
+    if (!firstname || !lastname || !rpps || !email || !password) return res.status(400).json({ success: false });
+    return hashPassword(password).then(hash =>
+      register({ firstname, lastname, rpps, email, hash })
+        .then(pro => ({ token: makeJWT(pro.id), pro }))
+        .then(({ pro, token }) => res.status(201).json({ professional: pro, token }))
+        .catch(err => {
+          console.error(err);
+          return next();
+        }),
+    );
   });
 
   apiRoutes.use(isAuthenticated);
