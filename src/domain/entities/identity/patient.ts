@@ -4,4 +4,5 @@ export type Patient = {
   lastname: string;
   email: string;
   birthdate: string; // Date format ISO
+  hash: string;
 };

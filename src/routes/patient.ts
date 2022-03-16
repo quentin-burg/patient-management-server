@@ -2,12 +2,17 @@ import * as express from 'express';
 import { PatientPort } from '../domain/ports/patient';
 import { isAuthenticated, makeJWT } from '../infra/jwt';
 import { hashPassword } from '../infra/password-hash';
+import getPatientService from '../domain/services/patient';
 
-export default ({ findAll, register }: PatientPort) => {
+export default (repository: PatientPort) => {
+  const { register, findAll, login } = getPatientService(repository);
+
   const apiRoutes = express.Router();
 
-  apiRoutes.get('/', (req, res) => {
-    return findAll().then(patients => res.status(200).json(patients));
+  apiRoutes.get('/', (req, res, next) => {
+    return findAll()
+      .then(patients => res.status(200).json({ success: true, patients }))
+      .catch(next);
   });
 
   apiRoutes.post('/register', (req, res, next) => {
@@ -17,12 +22,21 @@ export default ({ findAll, register }: PatientPort) => {
     return hashPassword(password).then(hash =>
       register({ firstname, lastname, birthdate, email, hash })
         .then(patient => ({ token: makeJWT(patient.id), patient }))
-        .then(({ patient, token }) => res.status(201).json({ patient: patient, token }))
+        .then(({ patient, token }) => res.status(201).json({ success: true, patient: patient, token }))
         .catch(err => {
           console.error(err);
           return next();
         }),
     );
+  });
+
+  apiRoutes.post('/login', (req, res, next) => {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ success: false, reason: 'Missing parameter' });
+    return login(email, password)
+      .then(patient => ({ token: makeJWT(patient.id), patient }))
+      .then(({ patient, token }) => res.status(200).json({ success: true, patient, token }))
+      .catch(next);
   });
 
   apiRoutes.use(isAuthenticated);

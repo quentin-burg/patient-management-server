@@ -22,6 +22,7 @@ const toEntity = (p: PatientInstance): PatientEntity => ({
   lastname: p.lastname,
   firstname: p.firstname,
   birthdate: p.birthdate,
+  hash: p.hash,
 });
 
 export default (sequelize: Sequelize) => {
@@ -40,7 +41,9 @@ export default (sequelize: Sequelize) => {
 
   const PatientAdapter: PatientPort = {
     findAll: () => Patient.findAll().then(patients => patients.map(toEntity)),
-    register: (args: PatientRegisterParams) => Patient.create(args),
+    create: (args: PatientRegisterParams) => Patient.create(args),
+    findOneByEmail: (email: string) =>
+      Patient.findOne({ where: { email } }).then(p => (p ? toEntity(p) : Promise.reject('Patient not found.'))),
   };
   return { Patient, PatientAdapter };
 };
