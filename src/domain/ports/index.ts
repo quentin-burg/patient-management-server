@@ -1,7 +1,9 @@
-import { PatientPort } from './patient';
-import { ProfessionalPort } from './professional';
+import { ConsultationPort } from './consultation';
+import { MedicalFilesPort } from './medical-files';
+import { UserPort } from './user';
 
 export interface Repository {
-  professional: ProfessionalPort;
-  patient: PatientPort;
+  user: UserPort;
+  medicalFiles: MedicalFilesPort;
+  consultation: ConsultationPort;
 }

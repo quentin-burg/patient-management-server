@@ -1,20 +1,11 @@
-export type ProfessionalRegisterParams = {
-  email: string;
-  firstname: string;
-  lastname: string;
-  rpps: string;
-  hash: string;
-};
-
-export type ProfessionalLoginParams = {
+export type UserLoginParams = {
   email: string;
   password: string;
 };
 
-export type PatientRegisterParams = {
+export type UserRegisterParams = {
   email: string;
   firstname: string;
   lastname: string;
   hash: string;
-  birthdate: string;
 };

@@ -1,49 +1,20 @@
 export type Term = {
-  week: Week;
-  day: Day;
+  week: number;
+  day: number;
 };
 
-type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export const make = (week: number, day: number): Term => {
+  if (week >= 0 && week <= 41 && day >= 0 && day <= 6) {
+    return {
+      week,
+      day,
+    };
+  }
+  throw new Error('Term is not valid');
+};
 
-type Week =
-  | 0
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
-  | 25
-  | 26
-  | 27
-  | 28
-  | 29
-  | 30
-  | 31
-  | 32
-  | 33
-  | 34
-  | 35
-  | 36
-  | 37
-  | 38
-  | 39
-  | 40
-  | 41;
+export const toString = (term: Term) => `${term.week}+${term.day}`;
+export const toTerm = (term: string): Term => {
+  const tSplitted = term.split('+');
+  return make(parseInt(tSplitted[0], 10), parseInt(tSplitted[1], 10));
+};

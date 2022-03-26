@@ -1,12 +1,11 @@
 import * as express from 'express';
 import { Repository } from 'src/domain/ports';
 
-import professionalRoutes from './professional';
-import patientRoutes from './patient';
+import userRoutes from './user';
 
 export default (repository: Repository) => {
   const apiRoutes = express.Router();
 
-  apiRoutes.use('/professional', professionalRoutes(repository)).use('/patient', patientRoutes(repository));
+  apiRoutes.use('/user', userRoutes(repository));
   return apiRoutes;
 };

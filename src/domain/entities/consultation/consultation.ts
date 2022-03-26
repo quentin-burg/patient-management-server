@@ -1,14 +1,8 @@
 import { Term } from './term';
-import { UltraSoundFile } from './ultra-sound-file';
 
 export type Consultation = {
+  id: string;
   report: string;
   term: Term;
-  ultraSoundFiles: UltraSoundFile[];
+  images: string[];
 };
-
-export const buildConsultation = (report: string, term: Term, ultraSoundFiles: UltraSoundFile[]): Consultation => ({
-  report,
-  term,
-  ultraSoundFiles,
-});
