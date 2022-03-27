@@ -1,5 +1,9 @@
-import { Consultation } from '../entities/consultation/consultation';
+import { ConsultationCreateParams, ConsultationUpdateParams } from '../../shared.types';
+import { Consultation } from '../entities/consultation';
 
 export interface ConsultationPort {
-  findAll(): Promise<Consultation[]>; // TODO
+  findAll(): Promise<Consultation[]>;
+  create(args: ConsultationCreateParams): Promise<Consultation>;
+  findOneById(id: string): Promise<Consultation>;
+  update(args: ConsultationUpdateParams): Promise<Consultation>;
 }

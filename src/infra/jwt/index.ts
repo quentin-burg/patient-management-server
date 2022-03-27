@@ -6,7 +6,11 @@ export const makeJWT = (userId: string) => {
   return sign({ userId }, JWT_SECRET, { expiresIn: '30d' });
 };
 
-export const verifyJWT = (token: string) => {
+export const verifyJWT = (token: string | undefined) => {
+  if (!token) {
+    console.error('Token not provided. Cannot verify');
+    return null;
+  }
   try {
     const { userId } = verify(token, JWT_SECRET) as { userId: string };
     return userId;
@@ -23,6 +27,6 @@ export const isAuthenticated = (req, res, next) => {
   return next();
 };
 
-export const getUserIdFromJWT = (token: string) => {
+export const getUserIdFromJWT = (token: string | undefined) => {
   return verifyJWT(token);
 };

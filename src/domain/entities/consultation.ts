@@ -5,4 +5,5 @@ export type Consultation = {
   report: string;
   term: Term;
   images: string[];
+  medicalFileId: string;
 };

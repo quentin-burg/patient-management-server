@@ -1,7 +1,9 @@
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { BelongsToSetAssociationMixin, DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import { UserPort } from '../../../domain/ports/user';
 import { User as UserEntity } from '../../../domain/entities/user';
 import { UserRegisterParams } from '../../../shared.types';
+import { MedicalFileInstance } from './medical-file';
+import { MedicalFile } from '../../../domain/entities/medical-file';
 
 interface UserAttr {
   id: string;
@@ -13,7 +15,10 @@ interface UserAttr {
 
 interface UserCreationAttributes extends Optional<UserAttr, 'id'> {}
 
-export interface UserInstance extends Model<UserAttr, UserCreationAttributes>, UserAttr {}
+export interface UserInstance extends Model<UserAttr, UserCreationAttributes>, UserAttr {
+  addPatientFile: BelongsToSetAssociationMixin<MedicalFileInstance, MedicalFile>;
+  addProfessionalFile: BelongsToSetAssociationMixin<MedicalFileInstance, MedicalFile>;
+}
 
 const toEntity = (p: UserInstance): UserEntity => ({
   id: p.id,

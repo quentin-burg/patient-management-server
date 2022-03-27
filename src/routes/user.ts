@@ -11,18 +11,17 @@ export default (repository: Repository) => {
 
   apiRoutes.get('/', (req, res, next) => {
     return findAll()
-      .then(users => res.status(200).json({ success: true, users }))
+      .then(users => res.status(200).json({ users }))
       .catch(next);
   });
 
   apiRoutes.post('/register', (req, res, next) => {
     const { firstname, lastname, email, password } = req.body;
-    if (!firstname || !lastname || !email || !password)
-      return res.status(400).json({ success: false, reason: 'Missing parameter' });
+    if (!firstname || !lastname || !email || !password) return res.status(400).json({ reason: 'Missing parameter' });
     return hashPassword(password).then(hash =>
       register({ firstname, lastname, email, hash })
         .then(user => ({ token: makeJWT(user.id), user }))
-        .then(({ user, token }) => res.status(201).json({ success: true, user: user, token }))
+        .then(({ user, token }) => res.status(201).json({ user: user, token }))
         .catch(err => {
           console.error(err);
           return next();
@@ -32,10 +31,10 @@ export default (repository: Repository) => {
 
   apiRoutes.post('/login', (req, res, next) => {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ success: false, reason: 'Missing parameter' });
+    if (!email || !password) return res.status(400).json({ reason: 'Missing parameter' });
     return login(email, password)
       .then(user => ({ token: makeJWT(user.id), user }))
-      .then(({ user, token }) => res.status(200).json({ success: true, user, token }))
+      .then(({ user, token }) => res.status(200).json({ user, token }))
       .catch(next);
   });
 
