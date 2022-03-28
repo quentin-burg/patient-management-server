@@ -1,10 +1,13 @@
 import * as express from 'express';
 import getMedicalFileService from '../domain/services/medical-file';
+import getUserService from '../domain/services/user';
 import { Repository } from '../domain/ports';
 import { getUserIdFromJWT, isAuthenticated } from '../infra/jwt';
+import { onlyProfessional, RequestWithUserId } from '../infra/middlewares/only-professional';
 
 export default (repository: Repository) => {
   const { findAll, create, get } = getMedicalFileService(repository);
+  const { isProfessional } = getUserService(repository);
 
   const apiRoutes = express.Router();
 
@@ -16,14 +19,15 @@ export default (repository: Repository) => {
       .catch(next);
   });
 
-  apiRoutes.post('/', (req, res, next) => {
+  apiRoutes.post('/', onlyProfessional(isProfessional), (req: RequestWithUserId, res, next) => {
     const { parity, gravidity, patientId } = req.body;
     if (!parity || !gravidity || !patientId) return res.status(400).json({ reason: 'Missing parameter' });
-    const userId = getUserIdFromJWT(req.headers.authorization);
-    if (!userId) return res.status(400).json({ reason: 'Invalid token provided. User not found.' });
-    return create({ parity, patientId, professionalId: userId, gravidity })
-      .then(file => res.status(201).json({ file }))
-      .catch(next);
+    if (req.userId) {
+      return create({ parity, patientId, professionalId: req.userId, gravidity })
+        .then(file => res.status(201).json({ file }))
+        .catch(next);
+    }
+    return res.status(400).json({ reason: 'Missing requester.' });
   });
 
   apiRoutes.get('/:id', (req, res, next) => {

@@ -8,6 +8,8 @@ export type UserRegisterParams = {
   firstname: string;
   lastname: string;
   hash: string;
+  isPatient: boolean;
+  isProfessional: boolean;
 };
 
 export type MedicalFileCreateParams = {

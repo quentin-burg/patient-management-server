@@ -16,10 +16,12 @@ export default (repository: Repository) => {
   });
 
   apiRoutes.post('/register', (req, res, next) => {
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password, isPatient, isProfessional } = req.body;
     if (!firstname || !lastname || !email || !password) return res.status(400).json({ reason: 'Missing parameter' });
+    if (!isPatient && !isProfessional)
+      return res.status(400).json({ reason: 'Need provide isPatient or isProfessional parameter.' });
     return hashPassword(password).then(hash =>
-      register({ firstname, lastname, email, hash })
+      register({ firstname, lastname, email, hash, isPatient, isProfessional })
         .then(user => ({ token: makeJWT(user.id), user }))
         .then(({ user, token }) => res.status(201).json({ user: user, token }))
         .catch(err => {

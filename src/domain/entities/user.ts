@@ -4,4 +4,6 @@ export type User = {
   lastname: string;
   email: string;
   hash: string;
+  isProfessional: boolean;
+  isPatient: boolean;
 };

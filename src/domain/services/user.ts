@@ -12,4 +12,6 @@ export default ({ user }: Repository) => ({
         comparePassword(password, user.hash).then(isCorrect => (isCorrect ? user : Promise.reject('Login failed.'))),
       );
   },
+  isPatient: (id: string) => user.findOneById(id).then(u => u.isPatient),
+  isProfessional: (id: string) => user.findOneById(id).then(u => u.isProfessional),
 });

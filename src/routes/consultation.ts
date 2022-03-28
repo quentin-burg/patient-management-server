@@ -1,10 +1,13 @@
 import * as express from 'express';
 import getConsultationService from '../domain/services/consultation';
+import getUserService from '../domain/services/user';
 import { Repository } from '../domain/ports';
 import { getUserIdFromJWT, isAuthenticated } from '../infra/jwt';
+import { onlyProfessional } from '../infra/middlewares/only-professional';
 
 export default (repository: Repository) => {
   const { findAll, create, update } = getConsultationService(repository);
+  const { isProfessional } = getUserService(repository);
 
   const apiRoutes = express.Router();
 
@@ -16,17 +19,15 @@ export default (repository: Repository) => {
       .catch(next);
   });
 
-  apiRoutes.post('/', (req, res, next) => {
+  apiRoutes.post('/', onlyProfessional(isProfessional), (req, res, next) => {
     const { report, images, term, medicalFileId } = req.body;
     if (!term || !medicalFileId) return res.status(400).json({ reason: 'Missing parameter term or medicalFileId' });
-    const userId = getUserIdFromJWT(req.headers.authorization);
-    if (!userId) return res.status(400).json({ reason: 'Invalid token provided. User not found.' });
     return create({ term, images, report, medicalFileId })
       .then(file => res.status(201).json({ file }))
       .catch(next);
   });
 
-  apiRoutes.put('/:consultationId', (req, res, next) => {
+  apiRoutes.put('/:consultationId', onlyProfessional(isProfessional), (req, res, next) => {
     const { consultationId } = req.params;
     const { images, report } = req.body;
     if (!consultationId) return res.status(400).json({ reason: 'Missing parameter consultationId' });

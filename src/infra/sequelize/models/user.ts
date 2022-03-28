@@ -11,6 +11,8 @@ interface UserAttr {
   lastname: string;
   email: string;
   hash: string;
+  isProfessional: boolean;
+  isPatient: boolean;
 }
 
 interface UserCreationAttributes extends Optional<UserAttr, 'id'> {}
@@ -20,12 +22,14 @@ export interface UserInstance extends Model<UserAttr, UserCreationAttributes>, U
   addProfessionalFile: BelongsToSetAssociationMixin<MedicalFileInstance, MedicalFile>;
 }
 
-const toEntity = (p: UserInstance): UserEntity => ({
-  id: p.id,
-  email: p.email,
-  lastname: p.lastname,
-  firstname: p.firstname,
-  hash: p.hash,
+const toEntity = (u: UserInstance): UserEntity => ({
+  id: u.id,
+  email: u.email,
+  lastname: u.lastname,
+  firstname: u.firstname,
+  hash: u.hash,
+  isPatient: u.isPatient,
+  isProfessional: u.isProfessional,
 });
 
 export default (sequelize: Sequelize) => {
@@ -39,13 +43,17 @@ export default (sequelize: Sequelize) => {
     lastname: DataTypes.STRING,
     email: DataTypes.STRING,
     hash: DataTypes.STRING,
+    isProfessional: DataTypes.BOOLEAN,
+    isPatient: DataTypes.BOOLEAN,
   });
 
   const UserAdapter: UserPort = {
     findAll: () => User.findAll().then(users => users.map(toEntity)),
     create: (args: UserRegisterParams) => User.create(args),
     findOneByEmail: (email: string) =>
-      User.findOne({ where: { email } }).then(p => (p ? toEntity(p) : Promise.reject('User not found.'))),
+      User.findOne({ where: { email } }).then(u => (u ? toEntity(u) : Promise.reject('User not found.'))),
+    findOneById: (id: string) =>
+      User.findOne({ where: { id } }).then(u => (u ? toEntity(u) : Promise.reject('User not found.'))),
   };
   return { User, UserAdapter };
 };
