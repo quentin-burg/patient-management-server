@@ -39,7 +39,6 @@ export default (sequelize: Sequelize) => (MedicalFile: ModelStatic<MedicalFileIn
     term: DataTypes.STRING,
   });
 
-  // Consultation.create({ report, term, images }).then(toEntity)
   const ConsultationAdapter: ConsultationPort = {
     findAll: () => Consultation.findAll().then(c => c.map(toEntity)),
     findOneById: (id: string) =>
