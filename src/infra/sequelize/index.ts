@@ -4,7 +4,11 @@ import initUserModel from './models/user';
 import initMedicalFilesModel from './models/medical-file';
 import initConsultationModel from './models/consultation';
 
-export const sequelize = new Sequelize('postgres://postgres:postgres@127.0.0.1:5432/wheel');
+export const sequelize = new Sequelize(
+  process.env.NODE_ENV === 'production'
+    ? 'postgres://lkjxrjpn:Gg0xZbmdGQ3fo_XjvqIKg_DBh7om88ZG@manny.db.elephantsql.com/lkjxrjpn'
+    : 'postgres://postgres:postgres@127.0.0.1:5432/wheel',
+);
 
 const { UserAdapter, User } = initUserModel(sequelize);
 const { MedicalFile, MedicalFileAdapter } = initMedicalFilesModel(sequelize)(User);

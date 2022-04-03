@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon lib/index.js",
-    "start": "rm -rf lib && tsc && node lib/index.js",
+    "build": "rm -rf lib && tsc",
+    "start": "NODE_ENV=production node lib/index.js",
     "test": "jest"
   },
   "repository": {
