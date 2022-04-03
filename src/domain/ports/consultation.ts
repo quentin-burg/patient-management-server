@@ -6,4 +6,5 @@ export interface ConsultationPort {
   create(args: ConsultationCreateParams): Promise<Consultation>;
   findOneById(id: string): Promise<Consultation>;
   update(args: ConsultationUpdateParams): Promise<Consultation>;
+  findAllByMedicalFileId(id: string): Promise<Consultation[]>;
 }

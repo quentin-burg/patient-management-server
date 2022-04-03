@@ -22,7 +22,7 @@ export interface UserInstance extends Model<UserAttr, UserCreationAttributes>, U
   addProfessionalFile: BelongsToSetAssociationMixin<MedicalFileInstance, MedicalFile>;
 }
 
-const toEntity = (u: UserInstance): UserEntity => ({
+export const toEntity = (u: UserInstance): UserEntity => ({
   id: u.id,
   email: u.email,
   lastname: u.lastname,

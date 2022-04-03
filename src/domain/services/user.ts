@@ -4,6 +4,8 @@ import { Repository } from '../ports';
 
 export default ({ user }: Repository) => ({
   findAll: () => user.findAll(),
+  getByEmail: (email: string) => user.findOneByEmail(email),
+  getById: (id: string) => user.findOneById(id),
   register: (args: UserRegisterParams) => user.create(args),
   login: (email: string, password: string) => {
     return user

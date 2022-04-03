@@ -25,7 +25,8 @@ export const repository: Repository = {
 // Consultation.belongsTo(MedicalFiles)
 
 User.hasMany(MedicalFile, { foreignKey: 'patientId', as: 'patientFile' });
-// MedicalFiles.belongsTo(User);
+MedicalFile.belongsTo(User, { as: 'patient', foreignKey: 'patientId' });
 User.hasMany(MedicalFile, { foreignKey: 'professionalId', as: 'professionalFile' });
+MedicalFile.belongsTo(User, { as: 'professional', foreignKey: 'professionalId' });
 MedicalFile.hasMany(Consultation, { foreignKey: 'medicalFileId', as: 'consultations' });
 // Consultation.belongsTo(MedicalFiles);

@@ -6,6 +6,7 @@ import { UserInstance } from './user';
 import { ConsultationInstance } from './consultation';
 import { Consultation } from '../../../domain/entities/consultation';
 import { toEntity as toConsultation } from './consultation';
+import { toEntity as toUser } from './user';
 
 interface MedicalFileAttr {
   id: string;
@@ -20,6 +21,8 @@ export interface MedicalFileInstance extends Model<MedicalFileAttr, MedicalFileC
   professionalId: string;
   addConsultation: BelongsToSetAssociationMixin<ConsultationInstance, Consultation>;
   consultations: ConsultationInstance[];
+  patient: UserInstance;
+  professional: UserInstance;
 }
 
 const toEntity = (m: MedicalFileInstance): MedicalFile => ({
@@ -28,8 +31,16 @@ const toEntity = (m: MedicalFileInstance): MedicalFile => ({
   gravidity: m.gravidity,
   patientId: m.patientId,
   professionalId: m.professionalId,
-  consultations: m.consultations.map(c => toConsultation(c)),
+  consultations: m.consultations ? m.consultations.map(c => toConsultation(c)) : [],
 });
+
+const toEntityWithUsers = (m: MedicalFileInstance) => {
+  return {
+    ...toEntity(m),
+    patient: toUser(m.patient),
+    professional: toUser(m.professional),
+  };
+};
 
 export default (sequelize: Sequelize) => (User: ModelStatic<UserInstance>) => {
   const MedicalFile = sequelize.define<MedicalFileInstance>('MedicalFile', {
@@ -43,7 +54,19 @@ export default (sequelize: Sequelize) => (User: ModelStatic<UserInstance>) => {
   });
 
   const MedicalFileAdapter: MedicalFilePort = {
-    findAll: () => MedicalFile.findAll().then(mfs => mfs.map(toEntity)),
+    findAll: () =>
+      MedicalFile.findAll({
+        include: [
+          {
+            model: User,
+            as: 'patient',
+          },
+          {
+            model: User,
+            as: 'professional',
+          },
+        ],
+      }).then(mfs => mfs.map(toEntityWithUsers)),
     create: ({ gravidity, parity, patientId, professionalId }: MedicalFileCreateParams) =>
       User.findOne({ where: { id: patientId } })
         .then(patient => Promise.all([patient, User.findOne({ where: { id: professionalId } })]))
@@ -58,9 +81,23 @@ export default (sequelize: Sequelize) => (User: ModelStatic<UserInstance>) => {
                 ]);
               }),
             )
-            .then(([file]) => MedicalFile.findOne({ where: { id: file.id } })),
+            .then(([file]) => {
+              return MedicalFile.findOne({
+                where: { id: file.id },
+                include: [
+                  {
+                    model: User,
+                    as: 'patient',
+                  },
+                  {
+                    model: User,
+                    as: 'professional',
+                  },
+                ],
+              });
+            }),
         )
-        .then(mf => (mf ? toEntity(mf) : Promise.reject('Error when creating medical file.'))),
+        .then(mf => (mf ? toEntityWithUsers(mf) : Promise.reject('Error when creating medical file.'))),
     findOneById: (id: string) =>
       MedicalFile.findOne({ where: { id }, include: 'consultations' }).then(mf =>
         mf ? toEntity(mf) : Promise.reject('Medical file not found.'),

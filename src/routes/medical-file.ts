@@ -2,30 +2,48 @@ import * as express from 'express';
 import getMedicalFileService from '../domain/services/medical-file';
 import getUserService from '../domain/services/user';
 import { Repository } from '../domain/ports';
-import { getUserIdFromJWT, isAuthenticated } from '../infra/jwt';
+import { isAuthenticated, verifyJWT } from '../infra/jwt';
 import { onlyProfessional, RequestWithUserId } from '../infra/middlewares/only-professional';
 
 export default (repository: Repository) => {
   const { findAll, create, get } = getMedicalFileService(repository);
-  const { isProfessional } = getUserService(repository);
+  const { isProfessional, getByEmail } = getUserService(repository);
 
   const apiRoutes = express.Router();
 
   apiRoutes.use(isAuthenticated);
 
   apiRoutes.get('/', (req, res, next) => {
-    return findAll()
-      .then(files => res.status(200).json({ success: true, files }))
-      .catch(next);
+    const userInfos = verifyJWT(req.headers.authorization);
+    if (userInfos) {
+      return findAll()
+        .then(files =>
+          files.filter(f =>
+            userInfos.isPatient ? f.patientId === userInfos.userId : f.professionalId === userInfos.userId,
+          ),
+        )
+        .then(files => res.status(200).json({ files }))
+        .catch(next);
+    }
+    return res.status(400).json({ reason: 'Missing requester.' });
   });
 
   apiRoutes.post('/', onlyProfessional(isProfessional), (req: RequestWithUserId, res, next) => {
-    const { parity, gravidity, patientId } = req.body;
-    if (!parity || !gravidity || !patientId) return res.status(400).json({ reason: 'Missing parameter' });
+    const { parity, gravidity, patientEmail } = req.body;
+    if (parity < 0 || gravidity < 0 || !patientEmail) return res.status(400).json({ reason: 'Missing parameter' });
     if (req.userId) {
-      return create({ parity, patientId, professionalId: req.userId, gravidity })
-        .then(file => res.status(201).json({ file }))
-        .catch(next);
+      const professionalId = req.userId;
+      return getByEmail(patientEmail)
+        .then(user => {
+          if (!user.isPatient) return res.status(400).json({ reason: 'Email provided is not a patient.' });
+          return create({ parity, patientId: user.id, professionalId, gravidity }).then(file =>
+            res.status(201).json({ file }),
+          );
+        })
+        .catch(err => {
+          console.error(err);
+          return next;
+        });
     }
     return res.status(400).json({ reason: 'Missing requester.' });
   });

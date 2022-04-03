@@ -9,6 +9,7 @@ interface ConsultationAttr {
   report: string | undefined;
   images: string[] | undefined;
   term: string;
+  medicalFileId?: string;
 }
 
 interface ConsultationCreationAttributes extends Optional<ConsultationAttr, 'id'> {}
@@ -70,6 +71,8 @@ export default (sequelize: Sequelize) => (MedicalFile: ModelStatic<MedicalFileIn
         }
         return Promise.reject('No consultation updated.');
       }),
+    findAllByMedicalFileId: (fileId: string) =>
+      Consultation.findAll({ where: { medicalFileId: fileId } }).then(cs => cs.map(toEntity)),
   };
   return { Consultation, ConsultationAdapter };
 };

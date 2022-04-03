@@ -6,7 +6,7 @@ import { getUserIdFromJWT, isAuthenticated } from '../infra/jwt';
 import { onlyProfessional } from '../infra/middlewares/only-professional';
 
 export default (repository: Repository) => {
-  const { findAll, create, update } = getConsultationService(repository);
+  const { findAll, create, update, findAllByMedicalFileId } = getConsultationService(repository);
   const { isProfessional } = getUserService(repository);
 
   const apiRoutes = express.Router();
@@ -19,11 +19,18 @@ export default (repository: Repository) => {
       .catch(next);
   });
 
+  apiRoutes.get('/:fileId', (req, res, next) => {
+    const { fileId } = req.params;
+    return findAllByMedicalFileId(fileId)
+      .then(consultations => res.status(200).json({ success: true, consultations }))
+      .catch(next);
+  });
+
   apiRoutes.post('/', onlyProfessional(isProfessional), (req, res, next) => {
     const { report, images, term, medicalFileId } = req.body;
     if (!term || !medicalFileId) return res.status(400).json({ reason: 'Missing parameter term or medicalFileId' });
     return create({ term, images, report, medicalFileId })
-      .then(file => res.status(201).json({ file }))
+      .then(consultation => res.status(201).json({ consultation }))
       .catch(next);
   });
 

@@ -26,6 +26,8 @@ const update = ({ report, images, consultationId }: ConsultationUpdateParams) =>
 
 export const ConsultationAdapter: ConsultationPort = {
   findAll: () => Promise.resolve(Object.values(consultations)),
+  findAllByMedicalFileId: (id: string) =>
+    Promise.resolve(Object.values(consultations).filter(c => c.medicalFileId === id)),
   findOneById: (id: string) => {
     const consultation = consultations[id];
     return consultation ? Promise.resolve(consultation) : Promise.reject();

@@ -1,8 +1,8 @@
-import { MedicalFileCreateParams } from '../../shared.types';
+import { MedicalFileCreateParams, MedicalFileWithUsers } from '../../shared.types';
 import { MedicalFile } from '../entities/medical-file';
 
 export interface MedicalFilePort {
-  findAll(): Promise<MedicalFile[]>;
-  create(args: MedicalFileCreateParams): Promise<MedicalFile>;
+  findAll(): Promise<MedicalFileWithUsers[]>;
+  create(args: MedicalFileCreateParams): Promise<MedicalFileWithUsers>;
   findOneById(id: string): Promise<MedicalFile>;
 }

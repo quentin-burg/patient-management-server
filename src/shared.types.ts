@@ -1,3 +1,6 @@
+import { MedicalFile } from './domain/entities/medical-file';
+import { User } from './domain/entities/user';
+
 export type UserLoginParams = {
   email: string;
   password: string;
@@ -31,3 +34,8 @@ export type ConsultationUpdateParams = {
   images?: string[];
   consultationId: string;
 };
+
+export interface MedicalFileWithUsers extends MedicalFile {
+  patient: User;
+  professional: User;
+}

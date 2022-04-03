@@ -9,8 +9,7 @@ export const make = (week: number, day: number): Term => {
       week,
       day,
     };
-  }
-  throw new Error('Term is not valid');
+  } else throw new Error('Term is not valid');
 };
 
 export const toString = (term: Term) => `${term.week}+${term.day}`;
