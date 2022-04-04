@@ -15,7 +15,8 @@
     "url": "git@gitlab_2:pregnancy-wheel/pregnancy-wheel-server.git"
   },
   "author": "Quentin Burg",
-  "license": "ISC",
+  "license": "UNLICENSED",
+  "private": true,
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
