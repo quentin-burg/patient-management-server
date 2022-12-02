@@ -1,0 +1,536 @@
+{
+	"info": {
+		"_postman_id": "9a447cb0-d7d6-4172-9ad3-22dc051e415c",
+		"name": "Pregnancy Wheel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{root}}/user",
+					"host": [
+						"{{root}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{root}}/user/08571dd0-b4b5-11ec-9c69-f3152f1b71ea",
+					"host": [
+						"{{root}}"
+					],
+					"path": [
+						"user",
+						"08571dd0-b4b5-11ec-9c69-f3152f1b71ea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user patient",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\":\"Patient\", \n    \"lastname\":\"Zero\",\n    \"email\":\"patient@test.com\", \n    \"password\":\"password\",\n    \"isPatient\":true,\n    \"isProfessional\":false\n}"
+				},
+				"url": {
+					"raw": "{{root}}/user/register",
+					"host": [
+						"{{root}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Register user patient",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\":\"Patient\", \n    \"lastname\":\"Zero\",\n    \"email\":\"patient@test.com\", \n    \"password\":\"password\",\n    \"isPatient\":true,\n    \"isProfessional\":false\n}"
+						},
+						"url": {
+							"raw": "{{root}}/user/register",
+							"host": [
+								"{{root}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "565"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"235-GzhVSgG3WBcgRxpwtMbaL4t5bBQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 02 Dec 2022 09:30:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"user\": {\n        \"id\": \"fa9a4730-7223-11ed-922a-c93a1b2e08bd\",\n        \"firstname\": \"Patient\",\n        \"lastname\": \"Zero\",\n        \"email\": \"patient@test.com\",\n        \"hash\": \"$2b$10$eKOu27vFi11L1GmG3gqP2.T/B17w.24l7PucNCrEeeQGbpAjRF0.C\",\n        \"isPatient\": true,\n        \"isProfessional\": false,\n        \"updatedAt\": \"2022-12-02T09:30:37.220Z\",\n        \"createdAt\": \"2022-12-02T09:30:37.220Z\"\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYTlhNDczMC03MjIzLTExZWQtOTIyYS1jOTNhMWIyZTA4YmQiLCJpc1BhdGllbnQiOnRydWUsImlzUHJvZmVzc2lvbmFsIjpmYWxzZSwiaWF0IjoxNjY5OTczNDM3LCJleHAiOjE2NzI1NjU0Mzd9.U1KRhSpy9lOgFz9LZfcEfYF8L40bZMDDzmkDaTsTQAU\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Register user professionnal",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\":\"Patient\", \n    \"lastname\":\"Zero\",\n    \"email\":\"patient@test.com\", \n    \"password\":\"password\",\n    \"isPatient\":true,\n    \"isProfessional\":false\n}"
+				},
+				"url": {
+					"raw": "{{root}}/user/register",
+					"host": [
+						"{{root}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Register user professionnal",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\":\"Pro\", \n    \"lastname\":\"Doctor\",\n    \"email\":\"doctor@test.com\", \n    \"password\":\"password\",\n    \"isPatient\":true,\n    \"isProfessional\":false\n}"
+						},
+						"url": {
+							"raw": "{{root}}/user/register",
+							"host": [
+								"{{root}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "562"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"232-Sg1dnOJzK27Nm11SZHrgtzUJj40\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 02 Dec 2022 09:35:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"user\": {\n        \"id\": \"b19f0010-7224-11ed-922a-c93a1b2e08bd\",\n        \"firstname\": \"Pro\",\n        \"lastname\": \"Doctor\",\n        \"email\": \"doctor@test.com\",\n        \"hash\": \"$2b$10$3bpMOSX7dFgZKmpOyjiSS.gv9fKdeK/nSeYMID/cTCcwRTEycg4nS\",\n        \"isPatient\": true,\n        \"isProfessional\": false,\n        \"updatedAt\": \"2022-12-02T09:35:44.274Z\",\n        \"createdAt\": \"2022-12-02T09:35:44.274Z\"\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMTlmMDAxMC03MjI0LTExZWQtOTIyYS1jOTNhMWIyZTA4YmQiLCJpc1BhdGllbnQiOnRydWUsImlzUHJvZmVzc2lvbmFsIjpmYWxzZSwiaWF0IjoxNjY5OTczNzQ0LCJleHAiOjE2NzI1NjU3NDR9.HzxuXUM1tZJW9zUpmVCbGxcrqq8-aU2lcuiNj6MM3eo\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"patient@test.com\", \n    \"password\":\"password\"\n}"
+				},
+				"url": {
+					"raw": "{{root}}/user/login",
+					"host": [
+						"{{root}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"patient@test.com\", \n    \"password\":\"password\"\n}"
+						},
+						"url": {
+							"raw": "{{root}}/user/login",
+							"host": [
+								"{{root}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "487"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e7-sY1fmrldJ8+awWNidOdIeR2rmFY\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 02 Dec 2022 09:31:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"user\": {\n        \"id\": \"fa9a4730-7223-11ed-922a-c93a1b2e08bd\",\n        \"email\": \"patient@test.com\",\n        \"lastname\": \"Zero\",\n        \"firstname\": \"Patient\",\n        \"hash\": \"$2b$10$eKOu27vFi11L1GmG3gqP2.T/B17w.24l7PucNCrEeeQGbpAjRF0.C\",\n        \"isPatient\": true,\n        \"isProfessional\": false\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYTlhNDczMC03MjIzLTExZWQtOTIyYS1jOTNhMWIyZTA4YmQiLCJpc1BhdGllbnQiOnRydWUsImlzUHJvZmVzc2lvbmFsIjpmYWxzZSwiaWF0IjoxNjY5OTczNTAxLCJleHAiOjE2NzI1NjU1MDF9.dsmcWwlnzJr8Gu3IPAEB0uDRxVoMmD9tWAqSDjkr9O4\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get all files",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get file by id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "Get file by id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenPro}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{root}}/medical-file/4c871130-7225-11ed-922a-c93a1b2e08bd",
+							"host": [
+								"{{root}}"
+							],
+							"path": [
+								"medical-file",
+								"4c871130-7225-11ed-922a-c93a1b2e08bd"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "205"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"cd-pzKZK7eCxuJoztdP3L7+Fi2GQh4\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 02 Dec 2022 09:41:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"file\": {\n        \"id\": \"4c871130-7225-11ed-922a-c93a1b2e08bd\",\n        \"parity\": 0,\n        \"gravidity\": 0,\n        \"patientId\": \"fa9a4730-7223-11ed-922a-c93a1b2e08bd\",\n        \"professionalId\": \"2f0b2790-7225-11ed-922a-c93a1b2e08bd\",\n        \"consultations\": []\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Create file",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "Create file",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenPro}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"parity\":0,\n    \"gravidity\":0,\n    \"patientEmail\": \"patient@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{root}}/medical-file",
+							"host": [
+								"{{root}}"
+							],
+							"path": [
+								"medical-file"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "673"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a1-PadnxO/+5btQoKdGjENXFcuMTgc\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 02 Dec 2022 09:40:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"file\": {\n        \"id\": \"4c871130-7225-11ed-922a-c93a1b2e08bd\",\n        \"parity\": 0,\n        \"gravidity\": 0,\n        \"patientId\": \"fa9a4730-7223-11ed-922a-c93a1b2e08bd\",\n        \"professionalId\": \"2f0b2790-7225-11ed-922a-c93a1b2e08bd\",\n        \"consultations\": [],\n        \"patient\": {\n            \"id\": \"fa9a4730-7223-11ed-922a-c93a1b2e08bd\",\n            \"email\": \"patient@test.com\",\n            \"lastname\": \"Zero\",\n            \"firstname\": \"Patient\",\n            \"hash\": \"$2b$10$eKOu27vFi11L1GmG3gqP2.T/B17w.24l7PucNCrEeeQGbpAjRF0.C\",\n            \"isPatient\": true,\n            \"isProfessional\": false\n        },\n        \"professional\": {\n            \"id\": \"2f0b2790-7225-11ed-922a-c93a1b2e08bd\",\n            \"email\": \"doctor@test.com\",\n            \"lastname\": \"Doctor\",\n            \"firstname\": \"Pro\",\n            \"hash\": \"$2b$10$ozWc7euoV8mUNDkTtsVr8uHPhhjto8on8VUDlwhV9Deexg7LDbgGe\",\n            \"isPatient\": false,\n            \"isProfessional\": true\n        }\n    }\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "root",
+			"value": "localhost:3001",
+			"type": "default"
+		},
+		{
+			"key": "tokenPatient",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYTlhNDczMC03MjIzLTExZWQtOTIyYS1jOTNhMWIyZTA4YmQiLCJpc1BhdGllbnQiOnRydWUsImlzUHJvZmVzc2lvbmFsIjpmYWxzZSwiaWF0IjoxNjY5OTczNTAxLCJleHAiOjE2NzI1NjU1MDF9.dsmcWwlnzJr8Gu3IPAEB0uDRxVoMmD9tWAqSDjkr9O4",
+			"type": "default"
+		},
+		{
+			"key": "tokenPro",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZjBiMjc5MC03MjI1LTExZWQtOTIyYS1jOTNhMWIyZTA4YmQiLCJpc1BhdGllbnQiOmZhbHNlLCJpc1Byb2Zlc3Npb25hbCI6dHJ1ZSwiaWF0IjoxNjY5OTczOTU0LCJleHAiOjE2NzI1NjU5NTR9.gpDgyzUK4R3yrpGmTb_lKxrK4lPHPHSlv7Ll97gWaE4",
+			"type": "default"
+		}
+	]
+}
